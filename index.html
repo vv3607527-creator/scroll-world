@@ -2,113 +2,420 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Prompt Generator — From thought to prompt in seconds</title>
-  <meta name="description" content="An AI-powered prompt engineering platform that converts simple text into highly optimized, structured prompts for any AI model." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prompt Generator — Write Once. Prompt Anywhere.</title>
   <style>
-    :root, .sw-root {
-      --sw-bg: #F8F4ED;
-      --sw-ink: #1E1B4B;
-      --sw-ink-soft: #6B7280;
-      --sw-accent: #4338CA;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --indigo: #4338CA;
+      --coral: #F97316;
+      --cream: #F8F4ED;
+      --ink: #1E1B4B;
+      --soft: #6B7280;
+      --lavender: #EEF2FF;
     }
-    @font-face {
-      font-family: 'SF Pro Rounded';
-      src: local('SF Pro Rounded'), local('system-ui'), local('sans-serif');
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      background: linear-gradient(180deg, rgba(248,244,237,0.95) 0%, transparent);
+      pointer-events: none;
+    }
+    nav * { pointer-events: auto; }
+    .brand {
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .brand span {
+      display: inline-block;
+      width: 10px; height: 12px;
+      background: var(--indigo);
+      border-radius: 3px;
+      margin-right: 8px;
+    }
+    .nav-cta {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #fff;
+      background: var(--ink);
+      padding: 10px 22px;
+      border-radius: 999px;
+      text-decoration: none;
+    }
+
+    /* ---- SECTIONS ---- */
+    section {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 64px;
+      overflow: hidden;
+    }
+
+    .scene-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .scene-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 42%;
+    }
+    .scene-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(90deg, var(--cream) 0%, rgba(248,244,237,0.1) 40%, transparent 65%);
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      max-width: 500px;
+    }
+
+    .eyebrow {
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--coral);
+      display: block;
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    p {
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      line-height: 1.55;
+      color: #4B4563;
+      margin-bottom: 20px;
+      max-width: 42ch;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      list-style: none;
+    }
+    .tags li {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--indigo);
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(67, 56, 202, 0.1);
+      border: 1px solid rgba(67, 56, 202, 0.2);
+    }
+
+    .step {
+      font-family: monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      color: var(--soft);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* ---- HERO ---- */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      background: linear-gradient(180deg, #EEF2FF 0%, var(--cream) 100%);
+    }
+    #hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.02;
+      margin-bottom: 20px;
+    }
+    #hero h1 span {
+      color: var(--indigo);
+    }
+    #hero p {
+      font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+      color: var(--soft);
+      max-width: 560px;
+      margin-bottom: 32px;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-primary {
+      background: var(--ink);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-ghost {
+      color: var(--ink);
+      padding: 14px 28px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      border: 1.5px solid rgba(30, 27, 75, 0.2);
+      transition: transform 0.2s;
+    }
+    .btn-ghost:hover { transform: translateY(-2px); }
+
+    /* ---- SCROLL HINT ---- */
+    .scroll-hint {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--soft);
+    }
+    .scroll-hint::after {
+      content: '';
+      display: block;
+      width: 20px; height: 30px;
+      margin: 8px auto 0;
+      border: 2px solid rgba(30,27,75,0.25);
+      border-radius: 10px;
+      position: relative;
+    }
+    .scroll-hint::before {
+      content: '';
+      position: absolute;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px; height: 7px;
+      background: var(--coral);
+      border-radius: 2px;
+      animation: bob 1.7s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+      40% { opacity: 1; }
+      100% { opacity: 0; transform: translateX(-50%) translateY(4px); }
+    }
+
+    /* ---- SCENE SPECIFICS ---- */
+    #scene2 .content { max-width: 520px; }
+    #scene2 .eyebrow { color: var(--indigo); }
+    #scene2 h2 { color: var(--indigo); }
+
+    #scene3 .eyebrow { color: var(--coral); }
+
+    #scene4 .content { max-width: 540px; }
+    #scene4 .eyebrow { color: var(--indigo); }
+    #scene4 h2 { color: var(--indigo); }
+
+    /* ---- FINALE ---- */
+    #finale {
+      text-align: center;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(0deg, var(--lavender) 0%, var(--cream) 100%);
+    }
+    #finale .content { max-width: 600px; text-align: center; }
+    #finale p { max-width: 50ch; margin-left: auto; margin-right: auto; }
+    .final-cta {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: var(--soft);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 860px) {
+      section { padding: 0 28px; }
+      nav { padding: 14px 20px; }
+      .scene-overlay {
+        background: linear-gradient(0deg, var(--cream) 0%, rgba(248,244,237,0.05) 50%);
+      }
     }
   </style>
-  <meta property="og:title" content="Prompt Generator — Write Once. Prompt Anywhere." />
-  <meta property="og:description" content="The AI-powered prompt engineering platform for ChatGPT, Claude, Gemini, and more." />
-  <meta property="og:type" content="website" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
 </head>
 <body>
-  <div id="top"></div>
-  <div id="world">
-    <section data-sw-seo>
-      <h1>Write once. Prompt anywhere.</h1>
-      <p>Prompt Generator converts your rough ideas into perfectly structured prompts for any AI model — ChatGPT, Claude, Gemini, GLM, Lovable, Bolt, Replit, and Cursor.</p>
-      <h2>Your ideas, your way</h2>
-      <p>Ditch the templates. Just type what you need — we handle the structure.</p>
-      <h2>One engine, every model</h2>
-      <p>Every platform has its own prompt style. We know them all.</p>
-      <h2>Always optimized</h2>
-      <p>Role, context, task, output format — every prompt is structured for maximum results.</p>
-      <h2>The result you deserve</h2>
-      <p>Copy your perfect prompt with one click and paste it anywhere.</p>
-      <p><a href="#">Start generating →</a> · <a href="#">How it works</a></p>
-    </section>
-  </div>
 
-  <script src="scrub-engine.js"></script>
-  <script>
-    mountScrollWorld(document.getElementById('world'), {
-      brand: { name: 'Prompt Generator', href: '#top' },
-      hint: 'scroll to fly in',
-      diveScroll: 1.3,
-      connScroll: 0.9,
-      crossfade: 0.12,
-      nav: true,
-      atmosphere: true,
-      scrollMobileFactor: 1.2,
-      sections: [
-        {
-          id: 'chaos',
-          label: 'The Chaos',
-          still: 'assets/img/scene1-chaos.svg',
-          accent: '#F97316',
-          eyebrow: 'Stop the scroll',
-          title: 'Too many models.<br />Too many prompts.',
-          body: "Every AI platform speaks a different language. Keeping track of what works where is exhausting — and your prompts deserve better than copy-paste chaos.",
-          tags: ['7+ AI models', 'Inconsistent results', 'Wasted time'],
-        },
-        {
-          id: 'input',
-          label: 'The Input',
-          still: 'assets/img/scene2-input.svg',
-          accent: '#4338CA',
-          eyebrow: 'Just type',
-          title: 'Type your idea.<br />Any way you want.',
-          body: "No templates, no dropdowns, no rigid forms. Just type what you need in plain English — a paragraph, a few words, a rough idea. We'll take it from here.",
-          tags: ['Plain English', 'No templates', 'It just works'],
-        },
-        {
-          id: 'engine',
-          label: 'The Engine',
-          still: 'assets/img/scene3-engine.svg',
-          accent: '#F97316',
-          eyebrow: 'Behind the scenes',
-          title: 'Smart structure.<br />Every single time.',
-          body: "Our engine analyzes your intent and builds a structured prompt with role, context, task, constraints, and output format — optimized for the model you're targeting.",
-          tags: ['Role assignment', 'Context injection', 'Format selection'],
-        },
-        {
-          id: 'hub',
-          label: 'Multi-Model',
-          still: 'assets/img/scene4-hub.svg',
-          accent: '#4338CA',
-          eyebrow: 'Your choice',
-          title: 'Prompt once.<br />Use anywhere.',
-          body: "Optimized prompts for ChatGPT, Claude, Gemini, GLM, Lovable, Bolt, Replit, and Cursor — all from a single input. Pick your target model and watch the prompt adapt.",
-          tags: ['ChatGPT', 'Claude', 'Gemini', 'Lovable', 'Bolt', 'Replit', 'Cursor'],
-        },
-        {
-          id: 'finale',
-          label: 'The Result',
-          still: 'assets/img/scene5-result.svg',
-          accent: '#F97316',
-          eyebrow: 'And it all pours into',
-          title: 'One perfect prompt.<br />Ready to use.',
-          body: "Your polished, model-optimized prompt — structured, tagged, and ready to copy. Paste it into your favorite AI and get the results you actually wanted.",
-          tags: [],
-          cta: {
-            primary: { label: 'Start generating →', href: '#' },
-            secondary: { label: 'How it works', href: '#' },
-          },
-        },
-      ],
-      connectors: [null, null, null, null],
+<!-- NAV -->
+<nav>
+  <a href="#" class="brand"><span></span>Prompt Generator</a>
+  <a href="#" class="nav-cta">Start generating →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <h1>Write once.<br /><span>Prompt anywhere.</span></h1>
+  <p>An AI-powered prompt engineering platform that converts simple text into highly optimized, structured prompts for every major AI model.</p>
+  <div class="hero-cta">
+    <a href="#" class="btn-primary">Start generating →</a>
+    <a href="#" class="btn-ghost">How it works</a>
+  </div>
+  <div class="scroll-hint">Scroll to explore</div>
+</section>
+
+<!-- SCENE 1: CHAOS -->
+<section id="scene1">
+  <div class="scene-bg">
+    <img src="assets/img/scene1-chaos.svg" alt="" loading="lazy" />
+  </div>
+  <div class="scene-overlay"></div>
+  <div class="content">
+    <span class="step">01 / 05</span>
+    <span class="eyebrow">Stop the scroll</span>
+    <h2>Too many models.<br />Too many prompts.</h2>
+    <p>Every AI platform speaks a different language. Keeping track of what works where is exhausting — and your prompts deserve better than copy-paste chaos.</p>
+    <ul class="tags">
+      <li>7+ AI models</li>
+      <li>Inconsistent results</li>
+      <li>Wasted time</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SCENE 2: INPUT -->
+<section id="scene2">
+  <div class="scene-bg">
+    <img src="assets/img/scene2-input.svg" alt="" loading="lazy" />
+  </div>
+  <div class="scene-overlay"></div>
+  <div class="content">
+    <span class="step">02 / 05</span>
+    <span class="eyebrow">Just type</span>
+    <h2>Type your idea.<br />Any way you want.</h2>
+    <p>No templates, no dropdowns, no rigid forms. Just type what you need in plain English — a paragraph, a few words, a rough idea. We'll take it from here.</p>
+    <ul class="tags">
+      <li>Plain English</li>
+      <li>No templates</li>
+      <li>It just works</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SCENE 3: ENGINE -->
+<section id="scene3">
+  <div class="scene-bg">
+    <img src="assets/img/scene3-engine.svg" alt="" loading="lazy" />
+  </div>
+  <div class="scene-overlay"></div>
+  <div class="content">
+    <span class="step">03 / 05</span>
+    <span class="eyebrow">Behind the scenes</span>
+    <h2>Smart structure.<br />Every single time.</h2>
+    <p>Our engine analyzes your intent and builds a structured prompt with role, context, task, constraints, and output format — optimized for the model you're targeting.</p>
+    <ul class="tags">
+      <li>Role assignment</li>
+      <li>Context injection</li>
+      <li>Format selection</li>
+    </ul>
+  </div>
+</section>
+
+<!-- SCENE 4: HUB -->
+<section id="scene4">
+  <div class="scene-bg">
+    <img src="assets/img/scene4-hub.svg" alt="" loading="lazy" />
+  </div>
+  <div class="scene-overlay"></div>
+  <div class="content">
+    <span class="step">04 / 05</span>
+    <span class="eyebrow">Your choice</span>
+    <h2>Prompt once.<br />Use anywhere.</h2>
+    <p>Optimized prompts for ChatGPT, Claude, Gemini, GLM, Lovable, Bolt, Replit, and Cursor — all from a single input. Pick your target model and watch the prompt adapt.</p>
+    <ul class="tags">
+      <li>ChatGPT</li>
+      <li>Claude</li>
+      <li>Gemini</li>
+      <li>Lovable</li>
+      <li>Bolt</li>
+      <li>Replit</li>
+      <li>Cursor</li>
+    </ul>
+  </div>
+</section>
+
+<!-- FINALE -->
+<section id="finale">
+  <div class="content">
+    <span class="step">05 / 05</span>
+    <span class="eyebrow">And it all pours into</span>
+    <h2>One perfect prompt.<br />Ready to use.</h2>
+    <p>Your polished, model-optimized prompt — structured, tagged, and ready to copy. Paste it into your favorite AI and get the results you actually wanted.</p>
+    <div class="final-cta">
+      <a href="#" class="btn-primary">Start generating →</a>
+      <a href="#" class="btn-ghost">How it works</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Prompt Generator — AI-powered prompt engineering &middot; Built with scroll-world
+</footer>
+
+<!-- Parallax scroll effect -->
+<script>
+  const images = document.querySelectorAll('.scene-bg img');
+  const overlay = document.querySelectorAll('.scene-overlay');
+
+  function onScroll() {
+    const y = window.scrollY;
+    const vh = window.innerHeight;
+    images.forEach((img, i) => {
+      const rect = img.closest('section').getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const progress = center / vh;
+      const offset = (progress - 0.5) * 40;
+      img.style.transform = `translateY(${Math.max(-30, Math.min(30, offset))}px)`;
     });
-  </script>
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
 </body>
 </html>
