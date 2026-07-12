@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Prompt Generator — From thought to prompt in seconds</title>
+  <meta name="description" content="An AI-powered prompt engineering platform that converts simple text into highly optimized, structured prompts for any AI model." />
+  <style>
+    :root, .sw-root {
+      --sw-bg: #F8F4ED;
+      --sw-ink: #1E1B4B;
+      --sw-ink-soft: #6B7280;
+      --sw-accent: #4338CA;
+    }
+    @font-face {
+      font-family: 'SF Pro Rounded';
+      src: local('SF Pro Rounded'), local('system-ui'), local('sans-serif');
+    }
+  </style>
+  <meta property="og:title" content="Prompt Generator — Write Once. Prompt Anywhere." />
+  <meta property="og:description" content="The AI-powered prompt engineering platform for ChatGPT, Claude, Gemini, and more." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>" />
+</head>
+<body>
+  <div id="top"></div>
+  <div id="world">
+    <section data-sw-seo>
+      <h1>Write once. Prompt anywhere.</h1>
+      <p>Prompt Generator converts your rough ideas into perfectly structured prompts for any AI model — ChatGPT, Claude, Gemini, GLM, Lovable, Bolt, Replit, and Cursor.</p>
+      <h2>Your ideas, your way</h2>
+      <p>Ditch the templates. Just type what you need — we handle the structure.</p>
+      <h2>One engine, every model</h2>
+      <p>Every platform has its own prompt style. We know them all.</p>
+      <h2>Always optimized</h2>
+      <p>Role, context, task, output format — every prompt is structured for maximum results.</p>
+      <h2>The result you deserve</h2>
+      <p>Copy your perfect prompt with one click and paste it anywhere.</p>
+      <p><a href="#">Start generating →</a> · <a href="#">How it works</a></p>
+    </section>
+  </div>
+
+  <script src="scrub-engine.js"></script>
+  <script>
+    mountScrollWorld(document.getElementById('world'), {
+      brand: { name: 'Prompt Generator', href: '#top' },
+      hint: 'scroll to fly in',
+      diveScroll: 1.3,
+      connScroll: 0.9,
+      crossfade: 0.12,
+      nav: true,
+      atmosphere: true,
+      scrollMobileFactor: 1.2,
+      sections: [
+        {
+          id: 'chaos',
+          label: 'The Chaos',
+          still: 'assets/img/scene1-chaos.svg',
+          accent: '#F97316',
+          eyebrow: 'Stop the scroll',
+          title: 'Too many models.<br />Too many prompts.',
+          body: 'Every AI platform speaks a different language. Keeping track of what works where is exhausting — and your prompts deserve better than copy-paste chaos.',
+          tags: ['7+ AI models', 'Inconsistent results', 'Wasted time'],
+        },
+        {
+          id: 'input',
+          label: 'The Input',
+          still: 'assets/img/scene2-input.svg',
+          accent: '#4338CA',
+          eyebrow: 'Just type',
+          title: 'Type your idea.<br />Any way you want.',
+          body: 'No templates, no dropdowns, no rigid forms. Just type what you need in plain English — a paragraph, a few words, a rough idea. We'll take it from here.',
+          tags: ['Plain English', 'No templates', 'It just works'],
+        },
+        {
+          id: 'engine',
+          label: 'The Engine',
+          still: 'assets/img/scene3-engine.svg',
+          accent: '#F97316',
+          eyebrow: 'Behind the scenes',
+          title: 'Smart structure.<br />Every single time.',
+          body: 'Our engine analyzes your intent and builds a structured prompt with role, context, task, constraints, and output format — optimized for the model you're targeting.',
+          tags: ['Role assignment', 'Context injection', 'Format selection'],
+        },
+        {
+          id: 'hub',
+          label: 'Multi-Model',
+          still: 'assets/img/scene4-hub.svg',
+          accent: '#4338CA',
+          eyebrow: 'Your choice',
+          title: 'Prompt once.<br />Use anywhere.',
+          body: 'Optimized prompts for ChatGPT, Claude, Gemini, GLM, Lovable, Bolt, Replit, and Cursor — all from a single input. Pick your target model and watch the prompt adapt.',
+          tags: ['ChatGPT', 'Claude', 'Gemini', 'Lovable', 'Bolt', 'Replit', 'Cursor'],
+        },
+        {
+          id: 'finale',
+          label: 'The Result',
+          still: 'assets/img/scene5-result.svg',
+          accent: '#F97316',
+          eyebrow: 'And it all pours into',
+          title: 'One perfect prompt.<br />Ready to use.',
+          body: 'Your polished, model-optimized prompt — structured, tagged, and ready to copy. Paste it into your favorite AI and get the results you actually wanted.',
+          tags: [],
+          cta: {
+            primary: { label: 'Start generating →', href: '#' },
+            secondary: { label: 'How it works', href: '#' },
+          },
+        },
+      ],
+      connectors: [null, null, null, null],
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+  <rect width="1600" height="900" fill="#F8F4ED"/>
+  <!-- Desk -->
+  <rect x="200" y="500" width="1200" height="40" rx="4" fill="#D4C9B3"/>
+  <rect x="220" y="540" width="1160" height="360" rx="4" fill="#E8DFCC"/>
+  <!-- Sticky notes scattered -->
+  <g filter="url(#shadow)">
+    <rect x="350" y="380" width="80" height="80" rx="2" fill="#F97316" opacity="0.8" transform="rotate(-8 390 420)"/>
+    <rect x="450" y="370" width="80" height="80" rx="2" fill="#FCD34D" opacity="0.8" transform="rotate(5 490 410)"/>
+    <rect x="550" y="390" width="80" height="80" rx="2" fill="#F97316" opacity="0.7" transform="rotate(-3 590 430)"/>
+    <rect x="650" y="375" width="80" height="80" rx="2" fill="#34D399" opacity="0.7" transform="rotate(10 690 415)"/>
+    <rect x="750" y="385" width="80" height="80" rx="2" fill="#FCD34D" opacity="0.8" transform="rotate(-6 790 425)"/>
+  </g>
+  <!-- Browser tabs floating above -->
+  <g>
+    <rect x="300" y="100" width="180" height="220" rx="8" fill="white" stroke="#4338CA" stroke-width="2" transform="rotate(-5 390 210)" opacity="0.9"/>
+    <rect x="305" y="100" width="170" height="24" rx="8" fill="#4338CA" transform="rotate(-5 390 210)"/>
+    <text x="360" y="116" fill="white" font-size="10" font-family="Arial" font-weight="bold" transform="rotate(-5 390 210)">ChatGPT</text>
+    <rect x="315" y="140" width="150" height="8" rx="4" fill="#E5E7EB" transform="rotate(-5 390 210)"/>
+    <rect x="315" y="158" width="130" height="8" rx="4" fill="#E5E7EB" transform="rotate(-5 390 210)"/>
+    <rect x="315" y="176" width="145" height="8" rx="4" fill="#E5E7EB" transform="rotate(-5 390 210)"/>
+    <rect x="315" y="200" width="60" height="24" rx="12" fill="#F97316" transform="rotate(-5 390 210)"/>
+    <text x="322" y="215" fill="white" font-size="9" font-family="Arial" transform="rotate(-5 390 210)">Send</text>
+
+    <rect x="550" y="80" width="180" height="220" rx="8" fill="white" stroke="#4338CA" stroke-width="2" transform="rotate(3 640 190)" opacity="0.9"/>
+    <rect x="555" y="80" width="170" height="24" rx="8" fill="#4338CA" transform="rotate(3 640 190)"/>
+    <text x="595" y="96" fill="white" font-size="10" font-family="Arial" font-weight="bold" transform="rotate(3 640 190)">Claude</text>
+    <rect x="565" y="120" width="150" height="8" rx="4" fill="#E5E7EB" transform="rotate(3 640 190)"/>
+    <rect x="565" y="138" width="120" height="8" rx="4" fill="#E5E7EB" transform="rotate(3 640 190)"/>
+
+    <rect x="800" y="100" width="180" height="220" rx="8" fill="white" stroke="#4338CA" stroke-width="2" transform="rotate(-2 890 210)" opacity="0.9"/>
+    <rect x="805" y="100" width="170" height="24" rx="8" fill="#4338CA" transform="rotate(-2 890 210)"/>
+    <text x="845" y="116" fill="white" font-size="10" font-family="Arial" font-weight="bold" transform="rotate(-2 890 210)">Gemini</text>
+    <rect x="815" y="140" width="150" height="8" rx="4" fill="#E5E7EB" transform="rotate(-2 890 210)"/>
+    <rect x="815" y="158" width="135" height="8" rx="4" fill="#E5E7EB" transform="rotate(-2 890 210)"/>
+  </g>
+  <!-- Coffee mug -->
+  <rect x="1000" y="420" width="50" height="60" rx="6" fill="#D4C9B3"/>
+  <rect x="1005" y="430" width="40" height="40" rx="3" fill="#3E2A20"/>
+  <ellipse cx="1025" cy="430" rx="22" ry="5" fill="#6B4C3B"/>
+  <!-- Steam -->
+  <path d="M1015 420 Q1018 410 1015 400" stroke="#C4B5A5" fill="none" stroke-width="1.5" opacity="0.5"/>
+  <path d="M1025 415 Q1028 405 1025 395" stroke="#C4B5A5" fill="none" stroke-width="1.5" opacity="0.4"/>
+  <!-- Scattered papers -->
+  <rect x="1150" y="430" width="60" height="80" rx="2" fill="white" stroke="#D1D5DB" stroke-width="1" transform="rotate(12 1180 470)"/>
+  <rect x="1220" y="435" width="60" height="80" rx="2" fill="white" stroke="#D1D5DB" stroke-width="1" transform="rotate(-5 1250 475)"/>
+  <line x1="1162" y1="448" x2="1200" y2="448" stroke="#E5E7EB" stroke-width="2" transform="rotate(12 1180 470)"/>
+  <line x1="1162" y1="462" x2="1195" y2="462" stroke="#E5E7EB" stroke-width="2" transform="rotate(12 1180 470)"/>
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+</svg>
