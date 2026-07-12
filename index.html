@@ -270,6 +270,137 @@
       font-size: 0.85rem;
     }
 
+    /* ---- DEMO MODAL ---- */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(30, 27, 75, 0.5);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.is-open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 20px;
+      max-width: 560px;
+      width: 100%;
+      padding: 40px;
+      box-shadow: 0 24px 80px rgba(30, 27, 75, 0.2);
+      animation: modalIn 0.3s ease-out;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal h3 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .modal p {
+      font-size: 0.95rem;
+      color: var(--soft);
+      margin-bottom: 20px;
+    }
+    .demo-input {
+      width: 100%;
+      padding: 16px 18px;
+      font-size: 1rem;
+      font-family: inherit;
+      border: 2px solid #E5E7EB;
+      border-radius: 12px;
+      outline: none;
+      resize: none;
+      transition: border-color 0.2s;
+      min-height: 80px;
+      background: var(--cream);
+    }
+    .demo-input:focus { border-color: var(--indigo); }
+    .demo-input.has-text { border-color: var(--indigo); }
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .modal-actions .btn-primary { font-size: 0.95rem; padding: 12px 24px; }
+    .modal-close {
+      background: none;
+      border: 0;
+      font-size: 1.5rem;
+      color: var(--soft);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      line-height: 1;
+      position: absolute;
+      top: 16px;
+      right: 16px;
+    }
+    .modal-close:hover { background: #F3F4F6; }
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    .result-box {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: var(--lavender);
+      border-radius: 12px;
+      border: 1px solid rgba(67, 56, 202, 0.2);
+      animation: fadeUp 0.4s ease-out;
+    }
+    .result-box.is-visible { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .result-box .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--indigo);
+      margin-bottom: 8px;
+    }
+    .result-box pre {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      color: var(--ink);
+    }
+    .result-box .model-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--indigo);
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .result-box .copy-btn {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--indigo);
+      border: 1px solid var(--indigo);
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: background 0.2s;
+    }
+    .result-box .copy-btn:hover { background: rgba(67, 56, 202, 0.08); }
+
+    .modal-inner { position: relative; }
+
     @media (max-width: 860px) {
       section { padding: 0 28px; }
       nav { padding: 14px 20px; }
@@ -392,6 +523,32 @@
   </div>
 </section>
 
+<!-- DEMO MODAL -->
+<div class="modal-overlay" id="demoModal">
+  <div class="modal">
+    <div class="modal-inner">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-header">
+        <div>
+          <h3>Try Prompt Generator</h3>
+          <p>Type your rough idea and see it transform into a structured prompt.</p>
+        </div>
+      </div>
+      <textarea class="demo-input" id="demoInput" placeholder="e.g. Write a blog post intro about AI ethics for a tech audience..."></textarea>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="generatePrompt()">✨ Generate prompt</button>
+        <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      </div>
+      <div class="result-box" id="resultBox">
+        <span class="label">Optimized for</span>
+        <span class="model-tag" id="modelTag">ChatGPT</span>
+        <pre id="resultText"></pre>
+        <button class="copy-btn" onclick="copyResult()">📋 Copy to clipboard</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>
   Prompt Generator — AI-powered prompt engineering &middot; Built with scroll-world
 </footer>
@@ -400,7 +557,195 @@
 <script>
   const images = document.querySelectorAll('.scene-bg img');
   const overlay = document.querySelectorAll('.scene-overlay');
+  const modal = document.getElementById('demoModal');
+  const demoInput = document.getElementById('demoInput');
+  const resultBox = document.getElementById('resultBox');
+  const resultText = document.getElementById('resultText');
+  const modelTag = document.getElementById('modelTag');
 
+  // ---- Modal ----
+  function openModal() {
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => demoInput.focus(), 200);
+  }
+  function closeModal() {
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+  // ---- CTA buttons ----
+  document.querySelectorAll('[href="#"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  });
+
+  // ---- Smooth scroll for scene anchors ----
+  document.querySelectorAll('a[href^="#scene"], a[href^="#finale"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = a.getAttribute('href').slice(1);
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ---- Generate demo prompt ----
+  function generatePrompt() {
+    const raw = demoInput.value.trim();
+    if (!raw) {
+      demoInput.style.borderColor = '#EF4444';
+      setTimeout(() => { demoInput.style.borderColor = ''; }, 1000);
+      return;
+    }
+    demoInput.classList.add('has-text');
+
+    // Extract intent keywords
+    const words = raw.toLowerCase().split(/\s+/);
+    const hasExplain = raw.match(/explain|what is|how does|define|summarize|overview/i);
+    const hasCreate = raw.match(/write|create|generate|draft|compose|produce|make/i);
+    const hasAnalyze = raw.match(/analyze|compare|evaluate|review|assess|critique/i);
+    const hasCode = raw.match(/code|function|api|script|program|build|implement/i);
+    const taskType = hasCode ? 'code' : hasExplain ? 'explain' : hasCreate ? 'create' : hasAnalyze ? 'analyze' : 'general';
+    const audience = raw.match(/for\s+(.+?)(?:\.|,|$)/)?.[1] || 'general audience';
+    const topic = raw.replace(/^(write|create|generate|explain|analyze|how to|what is|build)\s+/i, '').split(/[,.:;]/)[0].trim() || raw.slice(0, 60);
+
+    // Simulate model rotation
+    const models = ['ChatGPT', 'Claude', 'Gemini'];
+    modelTag.textContent = models[Math.floor(Math.random() * models.length)];
+
+    // Generate structured prompt
+    let prompt = '';
+    if (taskType === 'code') {
+      prompt = `**Role:** Expert ${topic.includes('python') ? 'Python' : topic.includes('js') || topic.includes('javascript') ? 'JavaScript' : 'Software'} Engineer
+
+**Task:** ${raw.replace(/^./, c => c.toUpperCase())}
+
+**Context:**
+- Target audience: Developers
+- Language: ${topic.includes('python') ? 'Python' : topic.includes('js') ? 'JavaScript' : 'Appropriate language'}
+- Best practices: Clean code, error handling, documentation
+
+**Constraints:**
+- Provide complete, working code examples
+- Include explanatory comments
+- Consider edge cases
+- Follow ${topic.includes('python') ? 'PEP 8' : topic.includes('js') ? 'standard JS conventions' : 'industry best practices'}
+
+**Output Format:**
+\`\`\`
+// Code with comments
+\`\`\`
+Followed by:
+- Usage example
+- Expected output
+- Key takeaways`;
+    } else if (taskType === 'explain') {
+      prompt = `**Role:** Expert Educator & Technical Writer
+
+**Task:** ${raw.replace(/^./, c => c.toUpperCase())}
+
+**Context:**
+- Audience: ${audience}
+- Tone: Clear, engaging, accessible
+- Goal: Make complex concepts understandable
+
+**Structure:**
+1. Hook / why it matters (1-2 sentences)
+2. Core concept explained simply
+3. Practical example or analogy
+4. Key takeaways
+
+**Constraints:**
+- Avoid unnecessary jargon without explanation
+- Use analogies and real-world examples
+- Keep paragraphs concise (2-3 sentences max)
+- Include a memorable closing thought`;
+    } else if (taskType === 'analyze') {
+      prompt = `**Role:** Senior Analyst & Strategic Consultant
+
+**Task:** ${raw.replace(/^./, c => c.toUpperCase())}
+
+**Context:**
+- Stakeholder: ${audience}
+- Required depth: Comprehensive analysis
+
+**Analysis Framework:**
+1. Overview & key facts
+2. Strengths & opportunities
+3. Weaknesses & risks
+4. Recommendations (prioritized)
+
+**Constraints:**
+- Data-driven where possible
+- Balanced perspective (pros & cons)
+- Actionable recommendations
+- Executive summary first, detail second
+
+**Output Format:**
+- Brief executive summary (3-5 bullets)
+- Detailed analysis sections
+- Priority-ranked action items`;
+    } else {
+      prompt = `**Role:** Creative Content Strategist
+
+**Task:** ${raw.replace(/^./, c => c.toUpperCase())}
+
+**Context:**
+- Target audience: ${audience}
+- Purpose: Engage, inform, and inspire action
+- Brand voice: Confident, approachable, expert
+
+**Structure:**
+1. Opening hook — grab attention immediately
+2. The problem — what the audience faces
+3. The solution — how this addresses it
+4. Social proof / evidence
+5. Strong call to action
+
+**Constraints:**
+- Opening line must create curiosity
+- Use short sentences and varied pacing
+- End every section with a takeaway or transition
+- Maximum readability (8th grade level)
+
+**Output Format:**
+\`\`\`
+[Headline options (3 variants)]
+
+[Body copy with section breaks]
+
+[CTA: One clear next step]
+\`\`\`
+Add notes on tone, audience triggers, and placement recommendations.`;
+    }
+
+    resultText.textContent = prompt;
+    resultBox.classList.add('is-visible');
+    resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // ---- Copy result ----
+  function copyResult() {
+    const text = resultText.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.textContent = '📋 Copy to clipboard'; }, 2000);
+    }).catch(() => {
+      // Fallback
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  }
+
+  // ---- Parallax ----
   function onScroll() {
     const y = window.scrollY;
     const vh = window.innerHeight;
