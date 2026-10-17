@@ -1,0 +1,7 @@
+{
+  "name": "scroll-world",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/static.test.mjs"
+  }
+}

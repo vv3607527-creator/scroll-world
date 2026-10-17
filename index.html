@@ -524,13 +524,13 @@
 </section>
 
 <!-- DEMO MODAL -->
-<div class="modal-overlay" id="demoModal">
+<div class="modal-overlay" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="demoTitle">
   <div class="modal">
     <div class="modal-inner">
-      <button class="modal-close" onclick="closeModal()">✕</button>
+      <button class="modal-close" aria-label="Close prompt generator" onclick="closeModal()">✕</button>
       <div class="modal-header">
         <div>
-          <h3>Try Prompt Generator</h3>
+          <h3 id="demoTitle">Try Prompt Generator</h3>
           <p>Type your rough idea and see it transform into a structured prompt.</p>
         </div>
       </div>
@@ -574,6 +574,7 @@
     document.body.style.overflow = '';
   }
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal(); });
 
   // ---- CTA buttons ----
   document.querySelectorAll('[href="#"]').forEach(btn => {
@@ -742,6 +743,9 @@ Add notes on tone, audience triggers, and placement recommendations.`;
       ta.select();
       document.execCommand('copy');
       document.body.removeChild(ta);
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => { btn.textContent = '📋 Copy to clipboard'; }, 2000);
     });
   }
 
